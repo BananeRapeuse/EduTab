@@ -10,39 +10,17 @@ on:
 
 jobs:
   build:
-    name: Build Android App
     runs-on: ubuntu-latest
 
     steps:
-      # Étape 1 : Vérification du code source
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Étape 2 : Configurer l'environnement JDK
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: 'temurin'
+          java-version: '11'
 
-      # Étape 3 : Configurer le cache Gradle
-      - name: Cache Gradle files
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      # Étape 4 : Construire l'application en mode debug
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-
-      # Étape 5 : Générer les artefacts (APK)
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-debug.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Build with Makefile
+        run: make build
