@@ -22,5 +22,5 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Build using Makefile
+      - name: Build with Makefile
         run: make build
